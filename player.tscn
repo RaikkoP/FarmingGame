@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://08xv2jaqjyvo"]
+
+[ext_resource type="Texture2D" uid="uid://b6npd3p1g46nb" path="res://icon.svg" id="1_hvmwk"]
+[ext_resource type="Script" path="res://Scripts/Player/Player.gd" id="1_ts38k"]
+[ext_resource type="Script" path="res://Scripts/Player/Player_Dash.gd" id="4_4jkcg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7uj7j"]
+size = Vector2(128, 129)
+
+[node name="Player" type="Node2D"]
+position = Vector2(151, 172)
+
+[node name="Player" type="CharacterBody2D" parent="."]
+script = ExtResource("1_ts38k")
+
+[node name="Player_Sprite" type="Sprite2D" parent="Player"]
+texture = ExtResource("1_hvmwk")
+
+[node name="Player_Collider" type="CollisionShape2D" parent="Player"]
+position = Vector2(-1, 0.5)
+shape = SubResource("RectangleShape2D_7uj7j")
+
+[node name="Player_Dash" type="Node" parent="Player"]
+script = ExtResource("4_4jkcg")
+
+[node name="Cooldowns" type="Timer" parent="Player/Player_Dash"]
+wait_time = 2.0
+one_shot = true
+
+[node name="Duration" type="Timer" parent="Player/Player_Dash"]
+wait_time = 0.2
+one_shot = true
+
+[connection signal="timeout" from="Player/Player_Dash/Cooldowns" to="Player/Player_Dash" method="_on_cooldowns_timeout"]
+[connection signal="timeout" from="Player/Player_Dash/Duration" to="Player/Player_Dash" method="_on_duration_timeout"]
